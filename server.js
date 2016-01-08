@@ -35,10 +35,10 @@ app.get('/', function(req, res) {
 app.post('/', upload.single('file'), function (req, res, next) {
 
     console.log(req.file); //form files
-    /*fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
+    fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
 	if (err) return console.error(err);
 	console.log('success');
-    });*/
+    });
     res.send(200);
 })
 
