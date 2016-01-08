@@ -40,5 +40,5 @@ app.post('/', upload.single('file'), function (req, res, next) {
 
 // El servidor escucha en el puerto 3000
 server.listen(3000, function() {
-  console.log("Node server running on http://localhost:3000");
+  console.log("Node server running on :3000");
 });
