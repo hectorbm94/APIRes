@@ -21,8 +21,14 @@ app.configure(function () {
 });
 
 // petición GET del root que sólo muestre "Hello world!"
-app.get('/', function(req, res) {
+/*app.get('/', function(req, res) {
   res.send("Hello world!");
+});*/
+
+app.get('/:trackname', function(req, res) {
+  //var name = req.params;
+  //console.log(name);
+  res.sendfile('../mnt/nas/' + req.params.trackname);
 });
 
 // petición POST DE PRUEBA"
@@ -35,7 +41,12 @@ app.get('/', function(req, res) {
 app.post('/', upload.single('file'), function (req, res, next) {
 
     console.log(req.file); //form files
-    fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
+    /*fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
+	if (err) return console.error(err);
+	console.log('success');
+    });*/
+    console.log(req.file.path);
+    fse.rename(req.file.path, 'public/' + req.file.originalname + '.mp3', function(err){
 	if (err) return console.error(err);
 	console.log('success');
     });
