@@ -28,7 +28,7 @@ app.configure(function () {
 app.get('/:trackname', function(req, res) {
   //var name = req.params;
   //console.log(name);
-  res.sendfile('../mnt/nas/' + req.params.trackname);
+  res.sendfile('/mnt/nas/' + req.params.trackname);
 });
 
 // petición POST DE PRUEBA"
