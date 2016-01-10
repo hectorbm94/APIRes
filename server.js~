@@ -15,41 +15,44 @@ var upload = multer({ dest: 'public/' });
 app.configure(function () {
 
   app.use(express.methodOverride()); // HTTP PUT and DELETE support
-  app.use(express.limit('4mb'));
+  app.use(express.limit('20mb'));
   app.use(app.router); // simple route management
 
 });
 
-// petición GET del root que sólo muestre "Hello world!"
-/*app.get('/', function(req, res) {
-  res.send("Hello world!");
-});*/
-
+// petición GET para obtener una canción
 app.get('/:trackname', function(req, res) {
-  //var name = req.params;
-  //console.log(name);
+  
+  //res.sendfile('public/' + req.params.trackname);
   res.sendfile('/mnt/nas/' + req.params.trackname);
 });
 
-// petición POST DE PRUEBA"
-/*app.post('/formpost', function(req, res) {
-  //res.send("Funciona el post!");
-  res.redirect('http://localhost:8080/tracks');
-});*/
+// petición DELETE para borrar una canción
+app.delete('/:trackname', function(req, res) {
+  /*fse.unlink('public/' + req.params.trackname, function(err){
+	if (err) return console.error(err);
+	console.log('delete success');
+  });*/
+  fse.unlink('/mnt/nas/' + req.params.trackname, function(err){
+	if (err) return console.error(err);
+	console.log('delete success');
+  });
+  res.send(200);
+});
 
-// Ruta para subir el archivo.
+// petición POST para subir una canción
 app.post('/', upload.single('file'), function (req, res, next) {
 
     console.log(req.file); //form files
-    fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
-	if (err) return console.error(err);
-	console.log('success');
-    });
-    console.log(req.file.path);
-    /*fse.rename(req.file.path, 'public/' + req.file.originalname + '.mp3', function(err){
+    /*fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
 	if (err) return console.error(err);
 	console.log('success');
     });*/
+    console.log(req.file.path);
+    fse.rename(req.file.path, 'public/' + req.file.originalname + '.mp3', function(err){
+	if (err) return console.error(err);
+	console.log('upload success');
+    });
     res.send(200);
 })
 
