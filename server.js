@@ -44,11 +44,11 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
     console.log(req.files['track'][0]);
     var imagen = req.files['image'][0];
     var cancion = req.files['track'][0];
-    fs.move(cancion.path, 'mnt/nas/canciones/' + cancion.originalname + '.mp3', function (err) {
+    fse.move(cancion.path, 'mnt/nas/canciones/' + cancion.originalname + '.mp3', function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
     });
-    fs.move(imagen.path, 'mnt/nas/imagenes/' + imagen.originalname + '.jpg', function (err) {
+    fse.move(imagen.path, 'mnt/nas/imagenes/' + imagen.originalname + '.jpg', function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
     });
