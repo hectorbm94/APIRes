@@ -22,10 +22,14 @@ app.configure(function () {
 });
 
 // petición GET para obtener una canción
-app.get('/:trackname', function(req, res) {
+app.get('/cancion/:trackname', function(req, res) {
   
-  //res.sendfile('public/' + req.params.trackname);
   res.sendfile('/mnt/nas/canciones/' + req.params.trackname);
+});
+
+app.get('/imagen/:imagename', function(req, res) {
+
+  res.sendfile('/mnt/nas/imagenes/' + req.params.imagename);
 });
 
 // petición DELETE para borrar una canción
