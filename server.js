@@ -7,6 +7,7 @@ var express = require("express"),
     qs = require('querystring'),
     multer = require('multer'),
     fse = require('fs-extra'),
+    mongoose = require('mongoose'),
     server  = http.createServer(app);
 
 var upload = multer({ dest: 'public/' });
@@ -24,16 +25,12 @@ app.configure(function () {
 app.get('/:trackname', function(req, res) {
   
   //res.sendfile('public/' + req.params.trackname);
-  res.sendfile('/mnt/nas/' + req.params.trackname);
+  res.sendfile('/mnt/nas/canciones/' + req.params.trackname);
 });
 
 // petición DELETE para borrar una canción
 app.delete('/:trackname', function(req, res) {
-  /*fse.unlink('public/' + req.params.trackname, function(err){
-	if (err) return console.error(err);
-	console.log('delete success');
-  });*/
-  fse.unlink('/mnt/nas/' + req.params.trackname, function(err){
+  fse.unlink('/mnt/nas/canciones/' + req.params.trackname, function(err){
 	if (err) return console.error(err);
 	console.log('delete success');
   });
@@ -44,15 +41,11 @@ app.delete('/:trackname', function(req, res) {
 app.post('/', upload.single('file'), function (req, res, next) {
 
     console.log(req.file); //form files
-    fse.move(req.file.path, '../mnt/nas/' + req.file.originalname + '.mp3', function(err){
+    fse.move(req.file.path, '../mnt/nas/canciones/' + req.file.originalname + '.mp3', function(err){
 	if (err) return console.error(err);
 	console.log('success');
     });
     console.log(req.file.path);
-    /*fse.rename(req.file.path, 'public/' + req.file.originalname + '.mp3', function(err){
-	if (err) return console.error(err);
-	console.log('upload success');
-    });*/
     res.send(200);
 })
 
