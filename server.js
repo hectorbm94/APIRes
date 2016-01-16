@@ -38,14 +38,20 @@ app.delete('/:trackname', function(req, res) {
 });
 
 // petición POST para subir una canción
-app.post('/', upload.single('file'), function (req, res, next) {
+app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', maxCount: 1 }]), function (req, res, next) {
 
-    console.log(req.file); //form files
-    fse.move(req.file.path, '../mnt/nas/canciones/' + req.file.originalname + '.mp3', function(err){
-	if (err) return console.error(err);
-	console.log('success');
+    console.log(req.files['image'][0]);
+    console.log(req.files['track'][0]);
+    var imagen = req.files['image'][0];
+    var cancion = req.files['track'][0];
+    fs.move(cancion.path, 'mnt/nas/canciones/' + cancion.originalname + '.mp3', function (err) {
+   	if (err) return console.error(err);
+  		console.log("success!")
     });
-    console.log(req.file.path);
+    fs.move(imagen.path, 'mnt/nas/imagenes/' + imagen.originalname + '.jpg', function (err) {
+   	if (err) return console.error(err);
+  		console.log("success!")
+    });
     res.send(200);
 })
 
