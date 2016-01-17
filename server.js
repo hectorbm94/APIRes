@@ -33,8 +33,17 @@ app.get('/imagen/:imagename', function(req, res) {
 });
 
 // petición DELETE para borrar una canción
-app.delete('/:trackname', function(req, res) {
+app.delete('/cancion/:trackname', function(req, res) {
   fse.unlink('/mnt/nas/canciones/' + req.params.trackname, function(err){
+	if (err) return console.error(err);
+	console.log('delete success');
+  });
+  res.send(200);
+});
+
+// petición DELETE para borrar una imagen
+app.delete('/imagen/:imagename', function(req, res) {
+  fse.unlink('/mnt/nas/imagenes/' + req.params.imagename, function(err){
 	if (err) return console.error(err);
 	console.log('delete success');
   });
