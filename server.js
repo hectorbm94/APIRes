@@ -23,7 +23,6 @@ app.configure(function () {
 
 // petición GET para obtener una canción
 app.get('/cancion/:trackname', function(req, res) {
-  
   res.sendfile('/mnt/nas/canciones/' + req.params.trackname);
 });
 
