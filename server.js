@@ -48,11 +48,15 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
     console.log(req.files['track'][0]);
     var imagen = req.files['image'][0];
     var cancion = req.files['track'][0];
-    fse.move(cancion.path, '/mnt/nas/canciones/' + cancion.originalname + '.mp3', function (err) {
+    //extensiones de la imagen y cancion
+    var ext = imagen.mimetype.split('/')[1];
+    var ext1 = cancion.mimetype.split('/')[1];
+    //mover la cancion e imagen a los discos nas 
+    fse.move(cancion.path, '/mnt/nas/canciones/' + cancion.originalname + '.' + ext1, function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
     });
-    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname + '.jpg', function (err) {
+    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname + '.' + ext, function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
     });
