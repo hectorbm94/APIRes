@@ -7,7 +7,6 @@ var express = require("express"),
     qs = require('querystring'),
     multer = require('multer'),
     fse = require('fs-extra'),
-    fs = require('fs'),
     mongoose = require('mongoose'),
     server  = http.createServer(app);
 
@@ -68,12 +67,24 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
 	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
 	    var imagen = req.files['image'][0];
 	    //extensiones de la imagen
-	    fs.renameSync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
-	   	if (err) return console.error(err);
-	  		console.log("success!")
-			done = true;
+	    fse.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
+			 	if (err) return console.error(err);
+					console.log("success!")
+				done = true;
 	    });
+			/*try {
+				fs.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname)
+			} catch (err) {
+				console.error('Oh no, there was an error: ' + err.message)
+			}*/
+
+			fse.unlink(imagen.path, function(err){
+				if (err) return console.error(err);
+				console.log('delete success');
+			});
+			done = true;
     }
+		
     if (done){
 		res.send(200);
 	} else {
