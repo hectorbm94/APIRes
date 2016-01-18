@@ -28,6 +28,7 @@ app.get('/cancion/:trackname', function(req, res) {
 
 // petición GET para obtener una imagen
 app.get('/imagen/:imagename', function(req, res) {
+	console.log(req.params.imagename);
   res.sendfile('/mnt/nas/imagenes/' + req.params.imagename);
 });
 
@@ -51,24 +52,32 @@ app.delete('/imagen/:imagename', function(req, res) {
 
 // petición POST para subir una canción
 app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', maxCount: 1 }]), function (req, res, next) {
-
+	
+	var done = false;
     console.log('Datos de la canción subida: ' + req.files['track'][0]);
     var cancion = req.files['track'][0];
     //extension de la cancion
     fse.move(cancion.path, '/mnt/nas/canciones/' + cancion.originalname, function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
+		done = true;
     });
     if(req.files['image']!== undefined){
+		done = false;
 	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
 	    var imagen = req.files['image'][0];
 	    //extensiones de la imagen
 	    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
 	   	if (err) return console.error(err);
 	  		console.log("success!")
+			done = true;
 	    });
     }
-    res.send(200);
+    if (done){
+		res.send(200);
+	} else {
+		res.send('it seems something has go wrong');
+	}
 })
 
 // El servidor escucha en el puerto 3000
