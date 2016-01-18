@@ -67,22 +67,22 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
 	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
 	    var imagen = req.files['image'][0];
 	    //extensiones de la imagen
-	    fse.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
+	    /*fse.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
 			 	if (err) return console.error(err);
 					console.log("success!")
 				done = true;
-	    });
-			/*try {
+	    });*/
+			try {
 				fs.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname)
+				done = true;
 			} catch (err) {
 				console.error('Oh no, there was an error: ' + err.message)
-			}*/
+			}
 
 			fse.unlink(imagen.path, function(err){
 				if (err) return console.error(err);
 				console.log('delete success');
 			});
-			done = true;
     }
 		
     if (done){
