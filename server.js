@@ -60,7 +60,7 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
    	if (err) return console.error(err);
   		console.log("success!")
     });
-    if(req.files['image'][0]!== undefined){
+    if(req.files['image']!== undefined){
 	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
 	    var imagen = req.files['image'][0];
 	    //extensiones de la imagen
