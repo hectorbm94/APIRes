@@ -73,7 +73,7 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
 				done = true;
 	    });*/
 			try {
-				fs.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname)
+				fse.copySync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname)
 				done = true;
 			} catch (err) {
 				console.error('Oh no, there was an error: ' + err.message)
