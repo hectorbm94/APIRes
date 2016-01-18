@@ -6,7 +6,7 @@ var express = require("express"),
     http    = require("http"),
     qs = require('querystring'),
     multer = require('multer'),
-    fse = require('fs-extra'),
+    fse = require('fs'),
     mongoose = require('mongoose'),
     server  = http.createServer(app);
 
@@ -67,7 +67,7 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
 	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
 	    var imagen = req.files['image'][0];
 	    //extensiones de la imagen
-	    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
+	    fse.fs.renameSync(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
 	   	if (err) return console.error(err);
 	  		console.log("success!")
 			done = true;
