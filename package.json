@@ -9,9 +9,7 @@
   },
   "dependencies": {
     "express": "3.3.x",
-    "fs": "0.0.2",
     "fs-extra": "^0.26.4",
-    "mongoose": "^3.6.20",
     "multer": "^1.1.0",
     "querystring": "^0.2.0"
   },
