@@ -16,8 +16,8 @@ var upload = multer({ dest: 'public/' });
 app.configure(function () {
 
   app.use(express.methodOverride()); // HTTP PUT and DELETE support
-  app.use(express.limit('20mb'));
-  app.use(app.router); // simple route management
+  app.use(express.limit('20mb'));    // Tamaño maximo
+  app.use(app.router); 		     // simple route management
 
 });
 
@@ -26,8 +26,8 @@ app.get('/cancion/:trackname', function(req, res) {
   res.sendfile('/mnt/nas/canciones/' + req.params.trackname);
 });
 
+// petición GET para obtener una imagen
 app.get('/imagen/:imagename', function(req, res) {
-
   res.sendfile('/mnt/nas/imagenes/' + req.params.imagename);
 });
 
@@ -52,22 +52,24 @@ app.delete('/imagen/:imagename', function(req, res) {
 // petición POST para subir una canción
 app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', maxCount: 1 }]), function (req, res, next) {
 
-    console.log(req.files['image'][0]);
-    console.log(req.files['track'][0]);
-    var imagen = req.files['image'][0];
+    console.log('Datos de la canción subida: ' + req.files['track'][0]);
     var cancion = req.files['track'][0];
-    //extensiones de la imagen y cancion
-    var ext = imagen.mimetype.split('/')[1];
+    //extension de la cancion
     var ext1 = cancion.mimetype.split('/')[1];
-    //mover la cancion e imagen a los discos nas 
     fse.move(cancion.path, '/mnt/nas/canciones/' + cancion.originalname + '.' + ext1, function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
     });
-    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname + '.' + ext, function (err) {
-   	if (err) return console.error(err);
-  		console.log("success!")
-    });
+    if(req.files['image'][0]!== undefined){
+	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
+	    var imagen = req.files['image'][0];
+	    //extensiones de la imagen
+    	    var ext = imagen.mimetype.split('/')[1];
+	    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname + '.' + ext, function (err) {
+	   	if (err) return console.error(err);
+	  		console.log("success!")
+	    });
+    }
     res.send(200);
 })
 
