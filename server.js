@@ -55,8 +55,7 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
     console.log('Datos de la canción subida: ' + req.files['track'][0]);
     var cancion = req.files['track'][0];
     //extension de la cancion
-    var ext1 = cancion.mimetype.split('/')[1];
-    fse.move(cancion.path, '/mnt/nas/canciones/' + cancion.originalname + '.' + ext1, function (err) {
+    fse.move(cancion.path, '/mnt/nas/canciones/' + cancion.originalname, function (err) {
    	if (err) return console.error(err);
   		console.log("success!")
     });
@@ -64,8 +63,7 @@ app.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'track', ma
 	    console.log('Datos de la portada subida: ' + req.files['image'][0]);
 	    var imagen = req.files['image'][0];
 	    //extensiones de la imagen
-    	    var ext = imagen.mimetype.split('/')[1];
-	    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname + '.' + ext, function (err) {
+	    fse.move(imagen.path, '/mnt/nas/imagenes/' + imagen.originalname, function (err) {
 	   	if (err) return console.error(err);
 	  		console.log("success!")
 	    });
